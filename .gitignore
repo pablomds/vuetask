@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.vite/
+.env
+.idea/
+.vscode/
+.DS_Store
+npm-debug.log
+yarn-error.log
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.env
+
+# Backend
+backend/node_modules/
+backend/.env
+
+docker-compose.override.yml
+docker-compose.yml
