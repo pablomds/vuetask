@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+@theme {
+    --font-assistant: "Assistant";
+    --color-primary-black: "#323232";
+    --color-primary-beige: "#DDD0C8";
+}
+
+body {
+    background-color: "#323232" !important;
+    font-family: var(--font-assistant);
+}
+
+.custom-shape-divider-bottom-1740486853 {
+    z-index: -1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.custom-shape-divider-bottom-1740486853 svg {
+    position: relative;
+    display: block;
+    width: calc(150% + 2px);
+    height: 480px;
+}
+
+.custom-shape-divider-bottom-1740486853 .shape-fill {
+    fill: #3A6F75;
+}
+
+/** For mobile devices **/
+@media (max-width: 767px) {
+    .custom-shape-divider-bottom-1740486853 svg {
+        width: calc(220% + 1.3px);
+        height: 580px;
+    }
+}
+@media (min-width: 768px) {
+    .custom-shape-divider-bottom-1740486853 svg {
+        width: calc(220% + 1.3px);
+        height: 680px;
+    }
+}
