@@ -1,36 +1,57 @@
 <script setup>
-import { Mail, Lock, Eye } from 'lucide-vue-next';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-vue-next';
+import { ref } from 'vue';
+import { useForm, useField } from 'vee-validate';
+import * as yup from 'yup';
+
+const schema = yup.object({
+  email: yup.string().email('Invalid email').required('Email is required'),
+  password: yup.string().min(6, "Password must at least have 6 characters").required('Password is required')
+});
+
+const { handleSubmit } = useForm({ validationSchema: schema });
+
+const { value: email, errorMessage: emailError } = useField('email');
+const { value: password, errorMessage: passwordError } = useField('password');
+
+const showPassword = ref(false);
+
+const submitForm = handleSubmit(values => {
+  console.log('Form submitted:', values);
+});
+
 </script>
 
 <template>
     <div class="h-screen w-screen flex flex-col justify-between px-6">
         <NavBar buttonLabel="Register" />
         <div class="flex flex-col items-center gap-y-6">
-            <div class="bg-white rounded-[25px] w-[342px] md:w-[500px] flex flex-col gap-y-9 px-3 py-5">
+            <form @submit.prevent="submitForm" class="bg-white rounded-[25px] w-[342px] md:w-[500px] flex flex-col gap-y-9 px-3 py-5">
                 <h1 class="text-4xl font-semibold text-primary-black text-center">Welcome !</h1>
                 <div class="flex flex-col gap-y-0.5">
-                    <label class="text-base" for="email">Email</label>
+                    <label class="text-base" for="email">Email <span v-if="emailError" class="text-red-500 text-sm italic">* {{ emailError }}</span></label>
                     <div class="flex items-center border border-primary-black rounded-[10px] p-[10px] gap-x-3">
                         <Mail class="text-primary-black/80" stroke-width=1 />
-                        <input type="text" class="outline-none w-full text-primary-black" placeholder="johndoe@gmail.com">
+                        <input v-model="email" type="text" class="outline-none w-full text-primary-black" placeholder="johndoe@gmail.com">
                     </div>
                 </div>
                 <div class="flex flex-col gap-y-0.5">
-                    <label class="text-base" for="password">Password</label>
+                    <label class="text-base" for="password">Password <span v-if="passwordError" class="text-red-500 text-sm italic">* {{ passwordError }}</span></label>
                     <div class="flex items-center border border-primary-black rounded-[10px] p-[10px] gap-x-3 justify-between">
                         <div class="flex gap-x-3 flex-grow">
                             <Lock class="text-primary-black/80" stroke-width={1} />
-                            <input type="password" class="outline-none text-primary-black w-full" placeholder="********">
+                            <input v-model="password" type="password" class="outline-none text-primary-black w-full" placeholder="********">
                         </div>
-                        <div>
-                            <Eye class="text-primary-black/80 cursor-pointer" stroke-width={1} />
+                        <div v-on:click="showPassword = !showPassword">
+                            <Eye v-if="showPassword" class="text-primary-black/80 cursor-pointer" stroke-width={1} />
+                            <EyeOff v-else class="text-primary-black/80 cursor-pointer" stroke-width={1} />
                         </div>
                     </div>
                 </div>
                 <div>
                     <button class="w-full bg-primary-black text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base">Login</button>
                 </div>
-            </div>
+            </form>
             <div class="text-center">
                 <span class="text-lg text-white">Don't have an account ?</span> <span class="text-lg underline text-white underline-offset-4">Register</span>
             </div>
