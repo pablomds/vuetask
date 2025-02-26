@@ -2,12 +2,12 @@
 
 @theme {
     --font-assistant: "Assistant";
-    --color-primary-black: "#323232";
-    --color-primary-beige: "#DDD0C8";
+    --color-primary-black: #323232;
+    --color-primary-beige: #DDD0C8;
 }
 
 body {
-    background-color: "#323232" !important;
+    background-color: var(--color-primary-beige);
     font-family: var(--font-assistant);
 }
 
