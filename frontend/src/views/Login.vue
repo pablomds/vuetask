@@ -7,28 +7,28 @@ import { Mail, Lock, Eye } from 'lucide-vue-next';
         <NavBar buttonLabel="Register" />
         <div class="flex flex-col items-center gap-y-6">
             <div class="bg-white rounded-[25px] w-[342px] md:w-[500px] flex flex-col gap-y-9 px-3 py-5">
-                <h1 class="text-4xl font-semibold text-[#323232] text-center">Welcome !</h1>
+                <h1 class="text-4xl font-semibold text-primary-black text-center">Welcome !</h1>
                 <div class="flex flex-col gap-y-0.5">
                     <label class="text-base" for="email">Email</label>
-                    <div class="flex items-center border border-[#323232] rounded-[10px] p-[10px] gap-x-3">
-                        <Mail class="text-[#323232]/80" stroke-width=1 />
-                        <input type="text" class="outline-none w-full text-[#323232]" placeholder="johndoe@gmail.com">
+                    <div class="flex items-center border border-primary-black rounded-[10px] p-[10px] gap-x-3">
+                        <Mail class="text-primary-black/80" stroke-width=1 />
+                        <input type="text" class="outline-none w-full text-primary-black" placeholder="johndoe@gmail.com">
                     </div>
                 </div>
                 <div class="flex flex-col gap-y-0.5">
                     <label class="text-base" for="password">Password</label>
-                    <div class="flex items-center border border-[#323232] rounded-[10px] p-[10px] gap-x-3 justify-between">
+                    <div class="flex items-center border border-primary-black rounded-[10px] p-[10px] gap-x-3 justify-between">
                         <div class="flex gap-x-3 flex-grow">
-                            <Lock class="text-[#323232]/80" stroke-width={1} />
-                            <input type="password" class="outline-none text-[#323232] w-full" placeholder="********">
+                            <Lock class="text-primary-black/80" stroke-width={1} />
+                            <input type="password" class="outline-none text-primary-black w-full" placeholder="********">
                         </div>
                         <div>
-                            <Eye class="text-[#323232]/80 cursor-pointer" stroke-width={1} />
+                            <Eye class="text-primary-black/80 cursor-pointer" stroke-width={1} />
                         </div>
                     </div>
                 </div>
                 <div>
-                    <button class="w-full bg-[#323232] text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base">Login</button>
+                    <button class="w-full bg-primary-black text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base">Login</button>
                 </div>
             </div>
             <div class="text-center">

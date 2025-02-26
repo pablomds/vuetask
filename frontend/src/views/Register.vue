@@ -7,35 +7,35 @@ import { Mail, Lock, Eye, User } from 'lucide-vue-next';
         <NavBar buttonLabel="Login" />
         <div class="flex flex-col items-center gap-y-6">
             <div class="bg-white rounded-[25px] w-[342px] md:w-[500px] flex flex-col gap-y-9 px-3 py-5">
-                <h1 class="text-4xl font-semibold text-[#323232] text-center">Create an account</h1>
+                <h1 class="text-4xl font-semibold text-primary-black text-center">Create an account</h1>
                 <div class="flex flex-col gap-y-0.5">
                     <label class="text-base" for="name">Name</label>
-                    <div class="flex items-center border border-[#323232] rounded-[10px] p-[10px] gap-x-3">
-                        <User class="text-[#323232]/80" stroke-width=1 />
-                        <input type="text" class="outline-none w-full text-[#323232]" placeholder="John Doe">
+                    <div class="flex items-center border border-primary-black rounded-[10px] p-[10px] gap-x-3">
+                        <User class="text-primary-black/80" stroke-width=1 />
+                        <input type="text" class="outline-none w-full text-primary-black" placeholder="John Doe">
                     </div>
                 </div>
                 <div class="flex flex-col gap-y-0.5">
                     <label class="text-base" for="email">Email</label>
-                    <div class="flex items-center border border-[#323232] rounded-[10px] p-[10px] gap-x-3">
-                        <Mail class="text-[#323232]/80" stroke-width=1 />
-                        <input type="text" class="outline-none w-full text-[#323232] bg-transparent peer autofill:bg-transparent focus:autofill:bg-transparent" placeholder="johndoe@gmail.com">
+                    <div class="flex items-center border border-primary-black rounded-[10px] p-[10px] gap-x-3">
+                        <Mail class="text-primary-black/80" stroke-width=1 />
+                        <input type="text" class="outline-none w-full text-primary-black bg-transparent peer autofill:bg-transparent focus:autofill:bg-transparent" placeholder="johndoe@gmail.com">
                     </div>
                 </div>
                 <div class="flex flex-col gap-y-0.5">
                     <label class="text-base" for="password">Password</label>
-                    <div class="flex items-center border border-[#323232] rounded-[10px] p-[10px] gap-x-3 justify-between">
+                    <div class="flex items-center border border-primary-black rounded-[10px] p-[10px] gap-x-3 justify-between">
                         <div class="flex gap-x-3 flex-grow">
-                            <Lock class="text-[#323232]/80" stroke-width={1} />
-                            <input type="password" class="outline-none text-[#323232] w-full" placeholder="********">
+                            <Lock class="text-primary-black/80" stroke-width={1} />
+                            <input type="password" class="outline-none text-primary-black w-full" placeholder="********">
                         </div>
                         <div>
-                            <Eye class="text-[#323232]/80 cursor-pointer" stroke-width={1} />
+                            <Eye class="text-primary-black/80 cursor-pointer" stroke-width={1} />
                         </div>
                     </div>
                 </div>
                 <div>
-                    <button class="w-full bg-[#323232] text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base">Register</button>
+                    <button class="w-full bg-primary-black text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base">Register</button>
                 </div>
             </div>
             <div class="text-center">
