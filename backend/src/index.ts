@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import fjwt, { FastifyJWT } from '@fastify/jwt'
 import fCookie from '@fastify/cookie'
 import userRoutes from './routes/userRoutes.js';
+import todoRoutes from './routes/todoRoutes.js'
 import { userSchemas } from './schemas/user.schemas.js';
 
 dotenv.config();
@@ -16,6 +17,7 @@ fastify.register(cors, {
 });
 fastify.register(fjwt, { secret: process.env.JWT_SECRET ?? "" });
 fastify.register(userRoutes, { prefix: '/api/users'});
+fastify.register(todoRoutes, { prefix: '/api/todos'});
 
 fastify.addHook('preHandler', (req, res, next) => {
   // here we are
