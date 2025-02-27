@@ -3,6 +3,7 @@ import { Mail, Lock, Eye, EyeOff } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
+import axiosInstance from '@/utils/axios';
 
 const schema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -16,8 +17,16 @@ const { value: password, errorMessage: passwordError } = useField('password');
 
 const showPassword = ref(false);
 
-const submitForm = handleSubmit(values => {
-  console.log('Form submitted:', values);
+const submitForm = handleSubmit(async (values) => {
+  try {
+    const response = await axiosInstance.post('/users/login', values); // Adjust the endpoint as necessary
+    console.log('User logged:', response.data); // Now this will work correctly
+    alert('User logged successfully!');
+  } catch (error) {
+    console.error('Form submission failed:', error);
+    console.log('Error details:', error.response ? error.response.data : error);
+    alert('Failed to login user: ' + (error.response?.data?.message || error.message));
+  }
 });
 
 </script>
@@ -40,7 +49,7 @@ const submitForm = handleSubmit(values => {
                     <div class="flex items-center border border-primary-black rounded-[10px] p-[10px] gap-x-3 justify-between">
                         <div class="flex gap-x-3 flex-grow">
                             <Lock class="text-primary-black/80" stroke-width={1} />
-                            <input v-model="password" type="password" class="outline-none text-primary-black w-full" placeholder="********">
+                            <input v-model="password" :type="showPassword ? 'text' : 'password'" class="outline-none text-primary-black w-full" placeholder="********">
                         </div>
                         <div v-on:click="showPassword = !showPassword">
                             <Eye v-if="showPassword" class="text-primary-black/80 cursor-pointer" stroke-width={1} />
@@ -49,10 +58,10 @@ const submitForm = handleSubmit(values => {
                     </div>
                 </div>
                 <div>
-                    <button class="w-full bg-primary-black text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base">Login</button>
+                    <button class="w-full bg-primary-black text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base select-none">Login</button>
                 </div>
             </form>
-            <div class="text-center">
+            <div class="text-center select-none">
                 <span class="text-lg text-white">Don't have an account ?</span> <span class="text-lg underline text-white underline-offset-4">Register</span>
             </div>
         </div>
