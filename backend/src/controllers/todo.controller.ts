@@ -46,7 +46,9 @@ export async function updateTodo(
 };
 
 export async function getTodos(
-reply: FastifyReply) {
+  req: FastifyRequest, 
+  reply: FastifyReply
+) {
 
   const { data: todos, error} = await supabase.from("todos").select("*");
 
