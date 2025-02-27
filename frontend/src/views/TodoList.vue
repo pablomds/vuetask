@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useTodosStore } from '@/store/todoStore';
-import { ChevronDown, FilePlus, Circle, Trash, Pencil } from 'lucide-vue-next';
+import { ChevronDown, FilePlus, Circle, Trash, Pencil } from 'lucide-vue-next'
+
+import axiosInstance from '@/utils/axios';
 import PrivateNavBar from '@/components/PrivateNavBar.vue';
 const store = useTodosStore();
 
@@ -9,7 +11,7 @@ const todos = computed(() => store.todos);
 
 const todoInitialState = {
     id: undefined,
-    text: "",
+    task: "",
     isFinished: false
 }
 
@@ -17,16 +19,17 @@ let newTodo = ref(todoInitialState)
 let addTaskFormDisplay = ref(false);
 
 const addNewTodo = () => {
-    const { text, id, isFinished } = newTodo.value;
+    const { task, id, isFinished } = newTodo.value;
 
-    if (text.trim()) {
+    console.log(task, id, isFinished)
+    if (task.trim()) {
         if (id !== undefined && id !== null) {
-            store.updateTodo(id, text, isFinished);
+            store.updateTodo(id, task, isFinished);
         } else {
-            store.addTodo(text);
+            store.addTodo(task);
         }
 
-        newTodo.value = { id: undefined, text: '', isFinished: false };
+        newTodo.value = { id: undefined, task: '', isFinished: false };
     }
     addTaskFormDisplay.value = false;
 };
@@ -35,10 +38,24 @@ const editTodo = (todo: any) => {
     addTaskFormDisplay.value = true;
     newTodo.value = {
         id: todo.id,
-        text: todo.text,
+        task: todo.task,
         isFinished: todo.isFinished
     }
 };
+
+// const fetchProtectedTodos = async () => {
+//     try {
+//         const response = await axiosInstance.get('/users');
+//         console.log(response)
+//     } catch (error) {
+//         console.error('Failed to fetch protected todos:', error);
+//     }
+// };
+
+// onMounted(() => {
+//     fetchProtectedTodos();
+// });
+
 </script>
 
 <template>
@@ -61,7 +78,7 @@ const editTodo = (todo: any) => {
                         <div class="flex items-center border border-primary-black bg-white/50 rounded-[10px] p-[10px] gap-x-3 justify-between">
                             <div class="flex gap-x-3 flex-grow">
                                 <FilePlus class="text-primary-black/80" stroke-width={1} />
-                                <input v-model="newTodo.text" type="text" placeholder="Enter a new todo" class="outline-none text-primary-black w-full">
+                                <input v-model="newTodo.task" type="text" placeholder="Enter a new todo" class="outline-none text-primary-black w-full">
                             </div>
                         </div>
                 </div>
