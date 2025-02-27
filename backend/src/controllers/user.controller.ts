@@ -72,7 +72,8 @@ export async function login(
       path: '/',
       httpOnly: true,
       secure: false, // Set to true in production
-      sameSite: 'lax'
+      sameSite: 'lax',
+      expires: new Date(Date.now() + 86400 * 1000)
     })
   
     return { accessToken: token }

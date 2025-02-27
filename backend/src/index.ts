@@ -10,8 +10,11 @@ dotenv.config();
 
 const fastify = Fastify({ logger: true });
 
-fastify.register(cors);
-fastify.register(fjwt, { secret: 'supersecretcode-CHANGE_THIS-USE_ENV_FILE' });
+fastify.register(cors, {
+  origin: process.env.FRONTEND_BASE_URL, // Replace with your Vue app URL
+  credentials: true, // Allow credentials (cookies) to be sent
+});
+fastify.register(fjwt, { secret: process.env.JWT_SECRET ?? "" });
 fastify.register(userRoutes, { prefix: '/api/users'});
 
 fastify.addHook('preHandler', (req, res, next) => {
