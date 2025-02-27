@@ -10,7 +10,6 @@ export async function createTodo(
   ) {
     const { task } = req.body;
 
-
     const created_by = (req.user as { id: string })?.id;
     
     const { data: todo, error } = await supabase
