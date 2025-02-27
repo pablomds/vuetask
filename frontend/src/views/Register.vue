@@ -4,6 +4,8 @@ import { ref } from 'vue';
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
 
+import axiosInstance from '@/utils/axios';
+
 const schema = yup.object({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -18,9 +20,18 @@ const { value: password, errorMessage: passwordError } = useField('password');
 
 const showPassword = ref(false);
 
-const submitForm = handleSubmit(values => {
-  console.log('Form submitted:', values);
+const submitForm = handleSubmit(async (values) => {
+  try {
+    const response = await axiosInstance.post('/users/register', values); // Adjust the endpoint as necessary
+    console.log('User created:', response.data); // Now this will work correctly
+    alert('User created successfully!');
+  } catch (error) {
+    console.error('Form submission failed:', error);
+    console.log('Error details:', error.response ? error.response.data : error);
+    alert('Failed to create user: ' + (error.response?.data?.message || error.message));
+  }
 });
+
 </script>
 
 <template>
