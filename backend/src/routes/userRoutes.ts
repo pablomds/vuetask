@@ -11,7 +11,7 @@ export default async function userRoutes(fastify: FastifyInstance) {
       preHandler: [fastify.authenticate],
     },
     getUsers,
-  )
+  );
 
   fastify.post(
     '/register',
@@ -24,7 +24,7 @@ export default async function userRoutes(fastify: FastifyInstance) {
       },
     },
     createUser,
-  )
+  );
 
   fastify.post(
     '/login',
@@ -37,7 +37,7 @@ export default async function userRoutes(fastify: FastifyInstance) {
       },
     },
     login,
-  )
+  );
 
   fastify.delete('/logout', { preHandler: [fastify.authenticate] }, logout);
 };
