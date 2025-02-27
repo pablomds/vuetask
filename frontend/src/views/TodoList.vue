@@ -1,60 +1,86 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { useTodosStore } from '@/store/todoStore';
-import { ChevronDown, FilePlus, Circle, Trash, Pencil } from 'lucide-vue-next'
+import { ChevronDown, FilePlus, Circle, CircleCheck, Trash, Pencil } from 'lucide-vue-next'
 
-import axiosInstance from '@/utils/axios';
+import { getUserTodos, createTodo, updateTodo } from '@/controllers/todosControllers';
 import PrivateNavBar from '@/components/PrivateNavBar.vue';
-const store = useTodosStore();
 
-const todos = computed(() => store.todos);
+const todoStore = useTodosStore();
+
+const todos = computed(() => todoStore.todos);
 
 const todoInitialState = {
-    id: undefined,
+    id: 0,
     task: "",
-    isFinished: false
+    is_finished: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
 }
 
-let newTodo = ref(todoInitialState)
-let addTaskFormDisplay = ref(false);
+let newTodo = ref(todoInitialState);
+let showTaskForm = ref(false);
 
-const addNewTodo = () => {
-    const { task, id, isFinished } = newTodo.value;
+const addOrEditTodo = async () => {
 
-    console.log(task, id, isFinished)
-    if (task.trim()) {
-        if (id !== undefined && id !== null) {
-            store.updateTodo(id, task, isFinished);
-        } else {
-            store.addTodo(task);
+    const { task, id, is_finished } = newTodo.value;
+    try {
+        if (task.trim()) {
+            if (id !== 0) {
+                todoStore.updateTodo({ id, task });
+                await updateTodo({ id, task, is_finished });
+            } else {
+                const createdTodoId = await createTodo(newTodo.value);
+                todoStore.addTodo({ id: createdTodoId ?? 0, task });
+            }
         }
-
-        newTodo.value = { id: undefined, task: '', isFinished: false };
+    } catch (error) {
+        console.log('error on addOrEditTodo()',error)
     }
-    addTaskFormDisplay.value = false;
+    newTodo.value = todoInitialState;
+    showTaskForm.value = false;
 };
 
 const editTodo = (todo: any) => {
-    addTaskFormDisplay.value = true;
+    showTaskForm.value = true;
     newTodo.value = {
         id: todo.id,
         task: todo.task,
-        isFinished: todo.isFinished
+        created_at: todo.created_at,
+        updated_at: todo.updated_at,
+        is_finished: todo.is_finished
+    };
+};
+
+const handleTodoIsFinished = async (todo: any) => {
+    const { id, task, is_finished } = todo;
+    todoStore.updateTodoIsFinished(id, !is_finished);
+    await updateTodo({id, task, is_finished: !is_finished})
+};
+
+const fetchUserTodos = async () => {
+    try {
+        const todos = await getUserTodos();
+        todoStore.addTodos(todos);
+    } catch (error) {
+        console.log('error on fetchUserTodos', error)
     }
 };
 
-// const fetchProtectedTodos = async () => {
-//     try {
-//         const response = await axiosInstance.get('/users');
-//         console.log(response)
-//     } catch (error) {
-//         console.error('Failed to fetch protected todos:', error);
-//     }
-// };
+const sortedTodoList = computed(() =>
+  [...todos.value].sort((a: any, b: any) => {
+    if (a.is_finished !== b.is_finished) {
+      return a.is_finished - b.is_finished;
+    }
+    return b.id - a.id;
+  })
+);
 
-// onMounted(() => {
-//     fetchProtectedTodos();
-// });
+
+
+onMounted(() => {
+    fetchUserTodos();
+});
 
 </script>
 
@@ -66,13 +92,13 @@ const editTodo = (todo: any) => {
                 TODO LIST
             </h1>
             <div class="flex flex-row justify-between">
-                <button @click="addTaskFormDisplay = !addTaskFormDisplay" class="bg-primary-black text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base cursor-pointer">Add Task</button>
+                <button @click="showTaskForm = !showTaskForm" class="bg-primary-black text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base cursor-pointer">Add Task</button>
                 <div class="w-[100px] flex flex-row justify-between px-2 py-[10px] rounded-[10px] bg-primary-black text-[#DDD0C8]"> 
                     All
                     <ChevronDown class="h-6 w-6" stroke-width={1} />
                 </div>
             </div>
-            <form v-if="addTaskFormDisplay" @submit.prevent="addNewTodo" class="flex flex-col gap-y-2">
+            <form v-if="showTaskForm" @submit.prevent="addOrEditTodo" class="flex flex-col gap-y-2">
                 <div class="flex flex-col gap-y-0.5">
                         <label class="text-base" for="password">New Task</label>
                         <div class="flex items-center border border-primary-black bg-white/50 rounded-[10px] p-[10px] gap-x-3 justify-between">
@@ -87,10 +113,13 @@ const editTodo = (todo: any) => {
                 </div>
             </form>
             <ul v-if="todos.length" class="bg-white flex flex-col gap-y-6 p-[10px] rounded-[10px]">
-                <li v-for="todo in todos" :key="todo.id" class="flex flex-row bg-[#DDD0C8]/50 rounded-[10px] p-[10px] items-center justify-between">
-                    <div class="flex flex-row gap-x-2">
-                        <Circle stroke-width={1} />
-                        <span>{{ todo.text }}</span>
+                <li v-for="todo in sortedTodoList" :key="todo.id" class="flex flex-row bg-[#DDD0C8]/50 rounded-[10px] p-[10px] items-center justify-between">
+                    <div  class="flex flex-row gap-x-2">
+                        <div class="cursor-pointer" @click="handleTodoIsFinished(todo)">
+                            <CircleCheck v-if="todo.is_finished" stroke-width={1} />
+                            <Circle v-else stroke-width={1} />
+                        </div>
+                        <span :class="todo.is_finished && 'line-through decoration-primary-black'">{{ todo.task }}</span>
                     </div>
                     <div class="flex flex-row gap-x-2">
                         <div v-on:click="editTodo(todo)" class="bg-white rounded-[5px] p-2 cursor-pointer">
