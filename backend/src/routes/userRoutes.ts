@@ -1,5 +1,4 @@
-import supabase from '../config/supabase.js';
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyInstance } from 'fastify'
 import { $ref } from '../schemas/user.schemas.js';
 import { createUser, getUsers, login, logout } from '../controllers/user.controller.js';
 
