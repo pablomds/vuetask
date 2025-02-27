@@ -14,7 +14,6 @@ const fastify = Fastify({ logger: true });
 fastify.register(cors);
 fastify.register(fjwt, { secret: 'supersecretcode-CHANGE_THIS-USE_ENV_FILE' });
 fastify.register(userRoutes, { prefix: '/api/users'});
-fastify.register(helloWorldRoutes);
 
 fastify.addHook('preHandler', (req, res, next) => {
   // here we are
