@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import fjwt, { FastifyJWT } from '@fastify/jwt'
 import fCookie from '@fastify/cookie'
 import userRoutes from './routes/userRoutes.js';
-import helloWorldRoutes from './routes/helloWorldRoutes.js';
 import { userSchemas } from './schemas/user.schemas.js';
 
 dotenv.config();
