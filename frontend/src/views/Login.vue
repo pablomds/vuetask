@@ -2,8 +2,11 @@
 import { Mail, Lock, Eye, EyeOff } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useForm, useField } from 'vee-validate';
+import { useRouter } from 'vue-router';
 import * as yup from 'yup';
 import axiosInstance from '@/utils/axios';
+
+const router = useRouter()
 
 const schema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -21,6 +24,7 @@ const submitForm = handleSubmit(async (values) => {
   try {
     const response = await axiosInstance.post('/users/login', values); // Adjust the endpoint as necessary
     console.log('User logged:', response.data); // Now this will work correctly
+    router.push('/todo-list')
     alert('User logged successfully!');
   } catch (error) {
     console.error('Form submission failed:', error);
