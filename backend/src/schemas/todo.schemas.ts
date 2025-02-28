@@ -17,7 +17,14 @@ const updateTodoSchema = z.object({
 
 export type UpdateTodoInput =  z.infer<typeof updateTodoSchema>;
 
+const deleteTodoSchema = z.object({
+  id: z.number()
+});
+
+export type DeleteTodoInput = z.infer<typeof deleteTodoSchema>;
+
 export const { schemas: todoSchemas, $ref } = buildJsonSchemas({
   createTodoSchema,
-  updateTodoSchema
+  updateTodoSchema,
+  deleteTodoSchema
 });
