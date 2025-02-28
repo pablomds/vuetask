@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { useTodosStore } from '@/store/todoStore';
-import { ChevronDown, FilePlus, Circle, CircleCheck, Trash, Pencil } from 'lucide-vue-next'
+import { FilePlus, Circle, CircleCheck, Trash, Pencil } from 'lucide-vue-next';
+import Dropdown from '@/components/global/Dropdown.vue';
 
+import { useTodosStore } from '@/store/todoStore';
 import * as todosControllers from '@/controllers/todosControllers';
 import PrivateNavBar from '@/components/PrivateNavBar.vue';
 
 const todoStore = useTodosStore();
 
 const todos = computed(() => todoStore.todos);
+
+const allFilters = ['All', 'To Do', 'Finished'];
+const selectedOption = ref(allFilters[0]);
 
 const todoInitialState = {
     id: 0,
@@ -81,14 +85,22 @@ const fetchUserTodos = async () => {
     }
 };
 
-const sortedTodoList = computed(() =>
-  [...todos.value].sort((a: any, b: any) => {
-    if (a.is_finished !== b.is_finished) {
-      return a.is_finished - b.is_finished;
-    }
-    return b.id - a.id;
-  })
-);
+const sortedTodoList = computed(() => {
+  return [...todos.value]
+    .filter(todo => {
+      if (selectedOption.value === 'All') return true; 
+      if (selectedOption.value === 'Finished') return todo.is_finished; 
+      if (selectedOption.value === 'To Do') return !todo.is_finished;
+      return true; 
+    })
+    .sort((a: any, b: any) => {
+      if (a.is_finished !== b.is_finished) {
+        return a.is_finished - b.is_finished; 
+      }
+      return b.id - a.id;
+    });
+});
+
 
 
 
@@ -107,10 +119,7 @@ onMounted(() => {
             </h1>
             <div class="flex flex-row justify-between">
                 <button @click="showTaskForm = !showTaskForm" class="bg-primary-black text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base cursor-pointer">Add Task</button>
-                <div class="w-[100px] flex flex-row justify-between px-2 py-[10px] rounded-[10px] bg-primary-black text-[#DDD0C8]"> 
-                    All
-                    <ChevronDown class="h-6 w-6" stroke-width={1} />
-                </div>
+                <Dropdown v-model="selectedOption" :options="allFilters" />
             </div>
             <form v-if="showTaskForm" @submit.prevent="addOrEditTodo" class="flex flex-col gap-y-2">
                 <div class="flex flex-col gap-y-0.5">
