@@ -3,9 +3,12 @@ import { Mail, Lock, Eye, EyeOff, User } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
+import { useRouter } from "vue-router";
 
+import NavBar from '@/components/NavBar.vue';
 import axiosInstance from '@/utils/axios';
 
+const router = useRouter();
 const schema = yup.object({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -32,11 +35,13 @@ const submitForm = handleSubmit(async (values) => {
   }
 });
 
+const goTo = () => router.push('/login')
+
 </script>
 
 <template>
     <div class="h-screen w-screen flex flex-col justify-between px-6">
-        <NavBar buttonLabel="Login" />
+        <NavBar buttonLabel="Login" routePath="/login" />
         <form @submit.prevent="submitForm" class="flex flex-col items-center gap-y-6">
             <div class="bg-white rounded-[25px] w-[342px] md:w-[500px] flex flex-col gap-y-9 px-3 py-5">
                 <h1 class="text-4xl font-semibold text-primary-black text-center">Create an account</h1>
@@ -68,20 +73,34 @@ const submitForm = handleSubmit(async (values) => {
                     </div>
                 </div>
                 <div>
-                    <button type="submit" class="w-full bg-primary-black text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base">Register</button>
+                    <button type="submit" class="w-full bg-primary-black shadow-md shadow-primary-black/50 cursor-pointer select-none text-white px-10 py-[10px] rounded-[10px] text-base">Register</button>
                 </div>
             </div>
             <div class="text-center">
-                <span class="text-lg text-white">Have an account ?</span> <span class="text-lg underline text-white underline-offset-4">Login</span>
+                <span class="text-lg text-white cursoir-pointer">Have an account ?</span> <span @click="goTo" class="text-lg underline text-white underline-offset-4 cursor-pointer">Login</span>
             </div>
         </form>
         <div/>
         <div class="custom-shape-divider-bottom-1740486853">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
-                preserveAspectRatio="none">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <defs>
+                    <!-- Dégradé linéaire -->
+                    <linearGradient id="gradientFill" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#3A86FF" />
+                        <stop offset="50%" stop-color="#8338EC" />
+                        <stop offset="100%" stop-color="#DDD0C8" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Chemin principal avec dégradé -->
                 <path
                     d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
-                    class="shape-fill"></path>
+                    fill="url(#gradientFill)" />
+
+                <!-- Même chemin avec motif superposé -->
+                <path
+                    d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+                    fill="url(#dotPattern)" />
             </svg>
         </div>
     </div>
