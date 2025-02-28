@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
 
 interface Todo {
-  text: string;
+  task: string;
   id: number;
-  isFinished: boolean;
+  is_finished: boolean;
+  updated_at: string; 
+  created_at: string;
 }
 
 type FilterType = 'all' | 'finished' | 'unfinished';
@@ -15,8 +17,8 @@ export const useTodosStore = defineStore('todos', {
     nextId: 0,
   }),
   getters: {
-    finishedTodos: (state): Todo[] => state.todos.filter(todo => todo.isFinished),
-    unfinishedTodos: (state): Todo[] => state.todos.filter(todo => !todo.isFinished),
+    finishedTodos: (state): Todo[] => state.todos.filter(todo => todo.is_finished),
+    unfinishedTodos: (state): Todo[] => state.todos.filter(todo => !todo.is_finished),
     filteredTodos(): Todo[] {
       if (this.filter === 'finished') {
         return this.finishedTodos;
@@ -27,13 +29,24 @@ export const useTodosStore = defineStore('todos', {
     },
   },
   actions: {
-    addTodo(text: string): void {
-      this.todos.push({ text, id: this.nextId++, isFinished: false });
+    addTodos(todoList: Todo[]):void {
+      this.todos = todoList;
     },
-    updateTodo(id: number, text: string, isFinished: boolean): void {
+    addTodo({ id, task } : { id: number, task: string }): void {
+      this.todos.push({ task, id, is_finished: false, updated_at: new Date().toISOString(), created_at: new Date().toISOString() });
+    },
+    updateTodo({ id, task } : { id: number, task: string }): void {
       this.todos = this.todos.map(todo => 
-        todo.id === id ? { ...todo, text, isFinished } : todo
+        todo.id === id ? { ...todo, task, updated_at: new Date().toISOString() } : todo
       );
-    }    
+    },
+    updateTodoIsFinished(id: number, is_finished: boolean) {
+      this.todos = this.todos.map(todo => 
+        todo.id === id ? { ...todo, is_finished } : todo
+      );
+    },
+    deleteTodo(todoId: number) {
+      this.todos = this.todos.filter(todo => todo.id !== todoId);
+    }
   },
 });
