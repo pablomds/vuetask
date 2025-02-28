@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { CreateTodoInput, UpdateTodoInput } from '../schemas/todo.schemas.js';
+import { CreateTodoInput, UpdateTodoInput, DeleteTodoInput } from '../schemas/todo.schemas.js';
 import supabase from '../config/supabase.js';
 
 export async function createTodo(
@@ -25,7 +25,7 @@ export async function createTodo(
 
     if (error) return reply.code(500).send(error);
   
-    return reply.code(201).send(todo);
+    return reply.code(201).send({ id: todo.id });
 };
 
 export async function updateTodo(
@@ -38,7 +38,7 @@ export async function updateTodo(
 
   const { error } = await supabase.from("todos").update({ task, is_finished }).eq('id', id);
 
-  if (error) reply.code(500).send(error);
+  if (error) return reply.code(500).send(error);
 
   return reply.code(200).send({ message: "success"});
 
@@ -54,6 +54,21 @@ export async function getTodos(
   if (error) return reply.status(500).send(error)
   
   return reply.code(200).send(todos);
+};
+
+export async function deleteTodo(  req: FastifyRequest<{
+  Body: DeleteTodoInput;
+}>,
+reply: FastifyReply) {
+
+  const { id } = req.body;
+
+  const { error } = await supabase.from("todos").delete().eq('id', id);
+
+  if (error) return reply.code(500).send(error);
+
+  return reply.code(204).send({ message: "success"});
+
 };
 
 export async function getUserTodos(
