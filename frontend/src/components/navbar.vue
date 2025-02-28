@@ -1,7 +1,13 @@
 <script setup>
+import { useRouter } from "vue-router";
+const route = useRouter();
 defineProps({
   buttonLabel: String,
+  routePath: String,
 })
+
+const goTo = (path) => route.push(path)
+
 </script>
 
 <template>
@@ -12,7 +18,7 @@ defineProps({
                     <ZenTaskIcon class="w-9 h-9"/>
                     <div class="text-3xl font-semibold text-[#323232]">VueTask</div>
                 </div>
-                <button class="bg-[#323232] text-white px-10 py-[10px] rounded-[10px] shadow-xl text-base">{{buttonLabel}}</button>
+                <button @click="goTo(routePath)" class="bg-[#323232] text-white px-10 py-[10px] rounded-[10px] shadow-md shadow-primary-black/50 text-base cursor-pointer">{{buttonLabel}}</button>
             </div>
             <div class="text-xs font-semibold">Vue your tasks, do more, stress less!</div>
         </div>
