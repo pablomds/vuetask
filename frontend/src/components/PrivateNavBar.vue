@@ -3,7 +3,7 @@ import { LogOut } from 'lucide-vue-next';
 </script>
 
 <template>
-    <div class="px-4 pt-6">
+    <div class="pt-6">
         <div class="flex flex-col">
             <div class="flex justify-between">
                 <div class="flex items-center gap-x-1">
