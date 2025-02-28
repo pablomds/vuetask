@@ -19,10 +19,20 @@ export const createTodo = async (data: any):Promise<number | void> => {
     }
 }
 
-export const updateTodo = async (data: any): Promise<void | unknown> => {
+export const updateTodo = async (data: any):Promise<void | unknown> => {
     try {
         await axiosInstance.patch('/todos/update', data)
     } catch (error) {
         return error
+    }
+};
+
+export const deleteTodo = async (data: any):Promise<void> => {
+    try {
+        await axiosInstance.delete('/todos', {
+            data: data
+        })
+    } catch (error) {
+        console.log("error on deleteTodo()", error)
     }
 };
