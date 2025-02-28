@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { createTodo, getTodos, updateTodo, getUserTodos } from '../controllers/todo.controller.js';
+import { createTodo, getTodos, updateTodo, deleteTodo, getUserTodos } from '../controllers/todo.controller.js';
 
 
 export default async function todoRoutes(fastify: FastifyInstance) {
@@ -26,6 +26,14 @@ export default async function todoRoutes(fastify: FastifyInstance) {
       preHandler: [fastify.authenticate],
     },
     updateTodo
+  );
+
+  fastify.delete(
+    '/',
+    {
+      preHandler: [fastify.authenticate],
+    },
+    deleteTodo
   );
 
   fastify.post(
