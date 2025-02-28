@@ -28,10 +28,6 @@ body {
     height: 480px;
 }
 
-.custom-shape-divider-bottom-1740486853 .shape-fill {
-    fill: #3A6F75;
-}
-
 /** For mobile devices **/
 @media (max-width: 767px) {
     .custom-shape-divider-bottom-1740486853 svg {
