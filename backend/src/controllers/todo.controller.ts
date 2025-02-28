@@ -35,10 +35,20 @@ export async function updateTodo(
   reply: FastifyReply
 ) {
   const { task, id, is_finished } = req.body;
+  const currentUserId = req.user.id;
 
-  const { error } = await supabase.from("todos").update({ task, is_finished }).eq('id', id);
+  const { data, error } = await supabase.from("todos").update({ task, is_finished }).eq('created_by', currentUserId).eq('id', id).select().single();
 
-  if (error) return reply.code(500).send(error);
+  if (error) {
+    if (error.message.includes("no rows updated")) {
+      return reply.code(403).send({ message: "You are not authorized to update this todo" });
+    }
+    return reply.code(500).send({ message: "Error updating todo item", error });
+  }
+  
+  if (!data) {
+    return reply.code(404).send({ message: "Todo not found or already updated" });
+  }
 
   return reply.code(200).send({ message: "success"});
 
@@ -56,27 +66,55 @@ export async function getTodos(
   return reply.code(200).send(todos);
 };
 
-export async function deleteTodo(  req: FastifyRequest<{
-  Body: DeleteTodoInput;
-}>,
-reply: FastifyReply) {
-
+export async function deleteTodo(
+  req: FastifyRequest<{
+    Body: DeleteTodoInput;
+  }>,
+  reply: FastifyReply
+) {
   const { id } = req.body;
+  const currentUserId = req.user.id;
 
-  const { error } = await supabase.from("todos").delete().eq('id', id);
+  const { data: todo, error: fetchError } = await supabase
+    .from("todos")
+    .select("*")
+    .eq('id', id)
+    .eq('created_by', currentUserId)
+    .single(); 
 
-  if (error) return reply.code(500).send(error);
 
-  return reply.code(204).send({ message: "success"});
+  if (fetchError || !todo) {
+    return reply.code(404).send({ message: "Todo item not found or you are not authorized to delete it" });
+  }
 
-};
+  const { error } = await supabase
+    .from("todos")
+    .delete()
+    .eq('id', id)
+    .eq('created_by', currentUserId);
+
+  if (error) {
+    if (error.message.includes("no rows deleted")) {
+      return reply.code(403).send({ message: "You are not authorized to delete this todo" });
+    }
+    return reply.code(500).send({ message: "Error deleting todo item", error });
+  }
+
+  return reply.code(204).send({ message: "Success" });
+}
+
 
 export async function getUserTodos(
   req: FastifyRequest, 
   reply: FastifyReply
 ) {
 
-  const createdBy = (req.user as { id: string })?.id;
+  const user = req.user as { id: string };
+  if (!user || !user.id) {
+    return reply.status(400).send({ message: "User ID is missing or invalid" });
+  }
+
+  const createdBy = user.id;
 
   const { data: todos, error } = await supabase
     .from("todos")
