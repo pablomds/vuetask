@@ -1,5 +1,14 @@
 <script setup>
+import { useRouter } from 'vue-router';
 import { LogOut } from 'lucide-vue-next';
+import { logOut } from '@/controllers/userControllers';
+
+const route = useRouter()
+
+const logOutUser = async () => {
+    await logOut();
+    route.push('/login');
+};
 </script>
 
 <template>
@@ -10,7 +19,7 @@ import { LogOut } from 'lucide-vue-next';
                     <ZenTaskIcon class="w-9 h-9"/>
                     <div class="text-3xl font-semibold text-[#323232]">VueTask</div>
                 </div>
-                <LogOut class="h-6 w-6 text-[#323232]" />
+                <LogOut @click="logOutUser" class="h-6 w-6 text-[#323232]" />
             </div>
             <div class="text-xs font-semibold">Vue your tasks, do more, stress less!</div>
         </div>
