@@ -44,6 +44,9 @@ export const useTodosStore = defineStore('todos', {
       this.todos = this.todos.map(todo => 
         todo.id === id ? { ...todo, is_finished } : todo
       );
-    }    
+    },
+    deleteTodo(todoId: number) {
+      this.todos = this.todos.filter(todo => todo.id !== todoId);
+    }
   },
 });
