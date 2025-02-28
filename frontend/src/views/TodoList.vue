@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useTodosStore } from '@/store/todoStore';
 import { ChevronDown, FilePlus, Circle, CircleCheck, Trash, Pencil } from 'lucide-vue-next'
 
-import { getUserTodos, createTodo, updateTodo } from '@/controllers/todosControllers';
+import * as todosControllers from '@/controllers/todosControllers';
 import PrivateNavBar from '@/components/PrivateNavBar.vue';
 
 const todoStore = useTodosStore();
@@ -18,28 +18,37 @@ const todoInitialState = {
     updated_at: new Date().toISOString()
 }
 
-let newTodo = ref(todoInitialState);
+let newTodo = ref({...todoInitialState});
 let showTaskForm = ref(false);
 
 const addOrEditTodo = async () => {
-
     const { task, id, is_finished } = newTodo.value;
     try {
         if (task.trim()) {
             if (id !== 0) {
                 todoStore.updateTodo({ id, task });
-                await updateTodo({ id, task, is_finished });
+                await todosControllers.updateTodo({ id, task, is_finished });
             } else {
-                const createdTodoId = await createTodo(newTodo.value);
+                const createdTodoId = await todosControllers.createTodo(newTodo.value);
                 todoStore.addTodo({ id: createdTodoId ?? 0, task });
             }
         }
+        newTodo.value = { ...todoInitialState };
     } catch (error) {
         console.log('error on addOrEditTodo()',error)
     }
-    newTodo.value = todoInitialState;
+    
     showTaskForm.value = false;
 };
+
+const handleDeleteTodo = async (todoId: number) => {
+    try {
+        await todosControllers.deleteTodo({id: todoId});
+        todoStore.deleteTodo(todoId);
+    } catch (error) {
+        console.log("error on handleDeleteTodo()", error);
+    }
+}
 
 const editTodo = (todo: any) => {
     showTaskForm.value = true;
@@ -53,14 +62,19 @@ const editTodo = (todo: any) => {
 };
 
 const handleTodoIsFinished = async (todo: any) => {
-    const { id, task, is_finished } = todo;
-    todoStore.updateTodoIsFinished(id, !is_finished);
-    await updateTodo({id, task, is_finished: !is_finished})
+    try {
+        const { id, task, is_finished } = todo;
+        todoStore.updateTodoIsFinished(id, !is_finished);
+        await todosControllers.updateTodo({id, task, is_finished: !is_finished})
+    } catch (error) {
+        console.log('error on handleTodoIsFinished()', error)
+    }
+
 };
 
 const fetchUserTodos = async () => {
     try {
-        const todos = await getUserTodos();
+        const todos = await todosControllers.getUserTodos();
         todoStore.addTodos(todos);
     } catch (error) {
         console.log('error on fetchUserTodos', error)
@@ -125,7 +139,7 @@ onMounted(() => {
                         <div v-on:click="editTodo(todo)" class="bg-white rounded-[5px] p-2 cursor-pointer">
                             <Pencil class="w-4 h-4" stroke-width={1} />
                         </div>
-                        <div class="bg-white rounded-[5px] p-2">
+                        <div @click="handleDeleteTodo(todo.id)" class="bg-white rounded-[5px] p-2">
                             <Trash class="w-4 h-4" stroke-width={1} />
                         </div>
                     </div>
