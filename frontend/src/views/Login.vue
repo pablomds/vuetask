@@ -23,10 +23,8 @@ const showPassword = ref(false);
 
 const submitForm = handleSubmit(async (values) => {
   try {
-    const response = await axiosInstance.post('/users/login', values); // Adjust the endpoint as necessary
-    console.log('User logged:', response.data); // Now this will work correctly
-    router.push('/todo-list')
-    alert('User logged successfully!');
+    const response = await axiosInstance.post('/users/login', values);
+    router.push('/todo-list');
   } catch (error) {
     console.error('Form submission failed:', error);
     console.log('Error details:', error.response ? error.response.data : error);
