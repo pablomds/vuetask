@@ -37,8 +37,6 @@ export async function createUser(
     ])
     .select("*").single();
 
-    console.log("-->",user)
-
   if (error) return reply.code(500).send(error);
 
   return reply.code(201).send(user);
@@ -71,7 +69,7 @@ export async function login(
     reply.setCookie('access_token', token, {
       path: '/',
       httpOnly: true,
-      secure: false, // Set to true in production
+      secure: process.env.NODE_ENV === 'production', // Set to true in production
       sameSite: 'lax',
       expires: new Date(Date.now() + 86400 * 1000)
     })
@@ -88,4 +86,8 @@ export async function getUsers(req: FastifyRequest, reply: FastifyReply) {
 export async function logout(req: FastifyRequest, reply: FastifyReply) {
   reply.clearCookie('access_token')
   return reply.send({ message: 'Logout successful' })
-}
+};
+
+export async function getMe(req: FastifyRequest, reply: FastifyReply) {
+  return reply.send(req.user);
+};

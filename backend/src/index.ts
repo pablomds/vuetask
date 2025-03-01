@@ -20,13 +20,12 @@ fastify.register(userRoutes, { prefix: '/api/users'});
 fastify.register(todoRoutes, { prefix: '/api/todos'});
 
 fastify.addHook('preHandler', (req, res, next) => {
-  // here we are
   req.jwt = fastify.jwt
   return next()
 });
 
 fastify.register(fCookie, {
-  secret: 'some-secret-key',
+  secret: process.env.COOKIE_SECRET,
   hook: 'preHandler',
 })
 
@@ -34,7 +33,8 @@ for (let schema of [...userSchemas]) {
   fastify.addSchema(schema)
 }
 
-const listeners = ['SIGINT', 'SIGTERM']
+const listeners = ['SIGINT', 'SIGTERM'];
+
 listeners.forEach((signal) => {
   process.on(signal, async () => {
     await fastify.close()
@@ -50,7 +50,6 @@ fastify.decorate(
     if (!token) {
       return reply.status(401).send({ message: 'Authentication required' })
     }
-    // here decoded will be a different type by default but we want it to be of user-payload type
     const decoded = req.jwt.verify<FastifyJWT['user']>(token)
     req.user = decoded
   },
