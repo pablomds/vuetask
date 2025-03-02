@@ -73,7 +73,7 @@ export async function login(
       secure: process.env.NODE_ENV === 'production', // Set to true in production
       sameSite: 'none',
       expires: new Date(Date.now() + 86400 * 1000),
-      domain: '.vercel.app',
+      domain: process.env.NODE_ENV === 'production' ? 'vuetask.onrender.com' : undefined,
     })
   
     return { accessToken: token }
