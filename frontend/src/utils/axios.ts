@@ -7,7 +7,7 @@ const baseUrl = import.meta.env.VITE_NODE_ENV === 'production'
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
-  timeout: 5000,
+  timeout: 15000,
   withCredentials: true,
   headers: {'Content-Type': 'application/json'},
 });
