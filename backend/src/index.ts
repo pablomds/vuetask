@@ -33,6 +33,10 @@ for (let schema of [...userSchemas]) {
   fastify.addSchema(schema)
 }
 
+fastify.get('/test', async (request, reply) => {
+  return { message: 'Fastify is working!' };
+});
+
 const listeners = ['SIGINT', 'SIGTERM'];
 
 listeners.forEach((signal) => {
