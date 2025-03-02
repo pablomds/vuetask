@@ -9,7 +9,6 @@ const env = loadEnv(
   process.cwd()
 );
 
-// console.log('.env',env.VITE_API_BASE_URL)
 
 export default defineConfig({
   plugins: [vue(), tailwindcss(), svgLoader()],
@@ -23,7 +22,7 @@ export default defineConfig({
       '/api': {
         target: env.VITE_API_BASE_URL, // Your Fastify server URL
         changeOrigin: true,
-        secure: false, // Set to true if using HTTPS
+        secure: env.VITE_NODE_ENV === "production", // Set to true if using HTTPS
       },
     },
   },
