@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import TodoList from '@/views/TodoList.vue';
+import NotFound from '@/views/NotFound.vue';
 // import axiosInstance from '@/utils/axios';
 // import Login from '../views/Login.vue';
 
@@ -10,6 +11,7 @@ const routes = [
   { path: '/', component: Register },
   { path: '/login', component: Login },
   { path: '/todo-list', component: TodoList },
+  { path: '/:pathMatch(.*)*', component: NotFound },
   // { path: '/todo-list', component: TodoList, meta: { requiresAuth: true } },
 ];
 
