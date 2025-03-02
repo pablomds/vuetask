@@ -5,7 +5,7 @@ import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
 import { useRouter } from "vue-router";
 
-import NavBar from '@/components/NavBar.vue';
+import NavBar from '@/components/navbar.vue';
 import axiosInstance from '@/utils/axios';
 
 const router = useRouter();
