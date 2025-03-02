@@ -25,5 +25,9 @@ export default defineConfig({
         secure: env.VITE_NODE_ENV === "production", // Set to true if using HTTPS
       },
     },
+    watch: {
+      usePolling: true
+    },
+    host: true, // Listen on all addresses
   },
 });
