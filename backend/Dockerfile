@@ -1,18 +1,24 @@
-# Utiliser une image Node.js optimisée
-FROM node:18-alpine
+FROM node:18
 
-# Définir le répertoire de travail
 WORKDIR /app
 
-# Copier package.json et installer les dépendances
-COPY package.json package-lock.json ./
-RUN pnpm install --production
+# Supprimez d'abord les anciens fichiers package.json et pnpm-lock.yaml
+COPY backend/package.json backend/pnpm-lock.yaml ./
 
-# Copier le reste des fichiers
-COPY . .
+# Installez pnpm et les dépendances AVANT de copier le reste des fichiers
+RUN npm install -g pnpm
+RUN pnpm config set node-linker hoisted
+RUN pnpm install
 
-# Exposer le port (assurez-vous que Fastify écoute sur ce port)
-EXPOSE 5000
+# Gardez une sauvegarde des node_modules
+RUN cp -r node_modules /tmp/node_modules
 
-# Démarrer l'application
-CMD ["tsx", "src/index.ts"]
+# Copiez le code source (cela peut écraser les node_modules)
+COPY backend/ ./
+
+# Restaurez les node_modules sauvegardés
+RUN rm -rf node_modules && cp -r /tmp/node_modules node_modules
+
+EXPOSE 3000
+
+CMD ["pnpm", "dev"]
