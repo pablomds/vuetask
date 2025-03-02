@@ -54,7 +54,7 @@ const handleDeleteTodo = async (todoId: number) => {
     }
 }
 
-const editTodo = (todo: any) => {
+const handleEditTodo = (todo: any) => {
     showTaskForm.value = true;
     newTodo.value = {
         id: todo.id,
@@ -145,7 +145,7 @@ onMounted(() => {
                         <span :class="todo.is_finished && 'line-through decoration-primary-black'">{{ todo.task }}</span>
                     </div>
                     <div class="flex flex-row gap-x-2">
-                        <div v-on:click="editTodo(todo)" class="bg-white rounded-[5px] p-2 cursor-pointer">
+                        <div v-on:click="handleEditTodo(todo)" class="bg-white rounded-[5px] p-2 cursor-pointer">
                             <Pencil class="w-4 h-4" stroke-width={1} />
                         </div>
                         <div @click="handleDeleteTodo(todo.id)" class="bg-white rounded-[5px] p-2">
