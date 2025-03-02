@@ -71,7 +71,7 @@ export async function login(
       path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Set to true in production
-      sameSite: 'none',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       expires: new Date(Date.now() + 86400 * 1000),
       domain: process.env.NODE_ENV === 'production' ? 'vuetask.onrender.com' : undefined,
     })
