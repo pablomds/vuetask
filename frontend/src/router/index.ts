@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useRouter } from 'vue-router';
-// import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import TodoList from '@/views/TodoList.vue';
@@ -19,7 +17,7 @@ const router = createRouter({
   routes
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   if (to.meta.requiresAuth) {
     try {
       const response = await axiosInstance.get('/users/me');
