@@ -11,5 +11,10 @@
       "forceConsistentCasingInFileNames": true,
       "strict": true,
       "skipLibCheck": true
-    }
+    },
+    "include": [
+      "vite.config.ts",
+      "src/**/*.ts",  // Or wherever your type declarations are located
+      "backend/**/*.ts"  // Include backend types if you have them
+    ],
 }
