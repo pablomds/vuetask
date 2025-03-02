@@ -9,6 +9,8 @@ const env = loadEnv(
   process.cwd()
 );
 
+console.log(env.VITE_API_BASE_URL)
+
 export default defineConfig({
   plugins: [vue(), tailwindcss(), svgLoader()],
   resolve: {
