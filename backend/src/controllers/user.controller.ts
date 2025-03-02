@@ -71,8 +71,9 @@ export async function login(
       path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Set to true in production
-      sameSite: 'lax',
-      expires: new Date(Date.now() + 86400 * 1000)
+      sameSite: 'none',
+      expires: new Date(Date.now() + 86400 * 1000),
+      domain: '.vercel.app',
     })
   
     return { accessToken: token }
