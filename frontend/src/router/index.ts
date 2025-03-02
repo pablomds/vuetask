@@ -9,7 +9,8 @@ import axiosInstance from '@/utils/axios';
 const routes = [
   { path: '/', component: Register },
   { path: '/login', component: Login },
-  { path: '/todo-list', component: TodoList, meta: { requiresAuth: true } },
+  { path: '/todo-list', component: TodoList },
+  // { path: '/todo-list', component: TodoList, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
@@ -17,24 +18,24 @@ const router = createRouter({
   routes
 });
 
-router.beforeEach(async (to, _, next) => {
-  if (to.meta.requiresAuth) {
-    try {
-      const response = await axiosInstance.get('/users/me');
+// router.beforeEach(async (to, _, next) => {
+//   if (to.meta.requiresAuth) {
+//     try {
+//       const response = await axiosInstance.get('/users/me');
 
-      if (!response.statusText) {
-        throw new Error('Not authenticated');
-      }
+//       if (!response.statusText) {
+//         throw new Error('Not authenticated');
+//       }
 
-      next(); 
+//       next(); 
 
-    } catch (error) {
-      console.warn('User not authenticated, redirecting to login');
-      next('/login');
-    }
-  } else {
-    next();
-  }
-});
+//     } catch (error) {
+//       console.warn('User not authenticated, redirecting to login');
+//       next('/login');
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 export default router
