@@ -111,7 +111,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="h-screen w-screen flex flex-col gap-y-11 px-6 pb-6 overflow-x-hidden">
+    <div class="h-screen w-screen flex flex-col gap-y-11 px-6 pb-6 overflow-x-hidden bg-primary-beige">
         <PrivateNavBar />
         <div class="flex flex-col gap-y-11 md:px-36 lg:px-48 xl:px-60 2xl:px-80">
             <h1 class="text-5xl text-center text-primary-black font-semibold">
