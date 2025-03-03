@@ -11,6 +11,14 @@ body {
     font-family: var(--font-assistant);
 }
 
+.Toastify__toast-theme--dark {
+    background: var(--color-primary-black);
+}
+
+.Toastify__progress-bar-theme--dark {
+    background-color: #DDD0C8 !important;
+  }
+
 .custom-shape-divider-bottom-1740486853 {
     z-index: -1;
     position: absolute;
