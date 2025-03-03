@@ -23,6 +23,7 @@ export default defineConfig({
         target: env.VITE_API_BASE_URL, // Your Fastify server URL
         changeOrigin: true,
         secure: env.VITE_NODE_ENV === "production", // Set to true if using HTTPS
+        rewrite: (path) => path.replace(/^\/api/, '')
       },
     },
     watch: {
