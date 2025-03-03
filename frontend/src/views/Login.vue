@@ -5,9 +5,10 @@ import { useForm, useField } from 'vee-validate';
 import { useRouter } from 'vue-router';
 import * as yup from 'yup';
 
+import { customToast } from '@/services/toastService';
 import axiosInstance from '@/utils/axios';
 
-const router = useRouter()
+const router = useRouter();
 
 const schema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -24,11 +25,13 @@ const showPassword = ref(false);
 const submitForm = handleSubmit(async (values) => {
   try {
     const response = await axiosInstance.post('/users/login', values);
-    router.push('/todo-list');
+    customToast.success("You're now logged in!");
+    setTimeout(() => {
+        router.push('/todo-list');
+    }, 1000)
   } catch (error) {
-    console.error('Form submission failed:', error);
     console.log('Error details:', error.response ? error.response.data : error);
-    alert('Failed to login user: ' + (error.response?.data?.message || error.message));
+    customToast.error('Failed to login');
   }
 });
 
