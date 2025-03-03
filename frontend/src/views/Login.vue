@@ -37,10 +37,10 @@ const goTo = () => router.push('/')
 </script>
 
 <template>
-    <div class="h-screen w-screen flex flex-col justify-between px-6">
+    <div class="h-screen w-screen overflow-hidden flex flex-col justify-between px-6">
         <NavBar buttonLabel="Register" routePath="/" />
         <div class="flex flex-col items-center gap-y-6">
-            <form @submit.prevent="submitForm" class="bg-white rounded-[25px] w-[342px] md:w-[500px] flex flex-col gap-y-9 px-3 py-5">
+            <form @submit.prevent="submitForm" class="bg-white rounded-[25px] w-[342px] md:w-[500px] flex flex-col gap-y-9 px-3 py-5 shadow-xl border-2 border-primary-black">
                 <h1 class="text-4xl font-semibold text-primary-black text-center">Welcome !</h1>
                 <div class="flex flex-col gap-y-0.5">
                     <label class="text-base" for="email">Email <span v-if="emailError" class="text-red-500 text-sm italic">* {{ emailError }}</span></label>
