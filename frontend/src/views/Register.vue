@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
 import { useRouter } from "vue-router";
+import { customToast } from '@/services/toastService';
 
 import NavBar from '@/components/navbar.vue';
 import axiosInstance from '@/utils/axios';
@@ -26,12 +27,11 @@ const showPassword = ref(false);
 const submitForm = handleSubmit(async (values) => {
   try {
     const response = await axiosInstance.post('/users/register', values); // Adjust the endpoint as necessary
-    console.log('User created:', response.data); // Now this will work correctly
-    alert('User created successfully!');
+    customToast.success("You're account was created! You can now login");
   } catch (error) {
     console.error('Form submission failed:', error);
     console.log('Error details:', error.response ? error.response.data : error);
-    alert('Failed to create user: ' + (error.response?.data?.message || error.message));
+    customToast.error("Register failed !");
   }
 });
 
