@@ -2,7 +2,7 @@ name: Keep Render Alive
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # Runs every 10 minutes
+    - cron: "*/5 * * * *"  # Runs every 5 minutes
   workflow_dispatch:
 
 jobs:
@@ -10,4 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping To Stay Alive
-        run: curl -s "https://vuetask.onrender.com/test"
+        run: |
+          curl -s "https://vuetask.onrender.com/test"
+          sleep 60  # Wait 1 minute
+          curl -s "https://vuetask.onrender.com/test"
+          sleep 60  # Wait 1 minute
+          curl -s "https://vuetask.onrender.com/test"
