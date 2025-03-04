@@ -15,6 +15,13 @@ fastify.register(cors, {
   origin: process.env.FRONTEND_BASE_URL ? process.env.FRONTEND_BASE_URL : true ,
   credentials: true, 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'Set-Cookie', 
+    'Cookie'
+  ],
+  exposedHeaders: ['Set-Cookie']
 });
 fastify.register(fjwt, { secret: process.env.JWT_SECRET ?? "" });
 fastify.register(userRoutes, { prefix: '/api/users'});
