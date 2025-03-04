@@ -66,12 +66,13 @@ export async function login(
       name: user.name,
     }
     const token = req.jwt.sign(payload)
+
   
     reply.setCookie('access_token', token, {
       path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Set to true in production
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
       expires: new Date(Date.now() + 86400 * 1000),
     })
   
