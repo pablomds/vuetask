@@ -12,8 +12,9 @@ dotenv.config();
 const fastify = Fastify({ logger: true });
 
 fastify.register(cors, {
-  origin: process.env.FRONTEND_BASE_URL, // Replace with your Vue app URL
-  credentials: true, // Allow credentials (cookies) to be sent
+  origin: process.env.FRONTEND_BASE_URL ? process.env.FRONTEND_BASE_URL : true ,
+  credentials: true, 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 });
 fastify.register(fjwt, { secret: process.env.JWT_SECRET ?? "" });
 fastify.register(userRoutes, { prefix: '/api/users'});
