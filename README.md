@@ -17,3 +17,8 @@ Features
 ![loginpage](./screenshots/register-page.png)
 ![lastestpage](./screenshots/todo-list-page.png)
 
+# Technologies
+* Docker: For containerization, enabling consistent development, testing, and deployment environments across platforms.
+* Vue 3: A progressive JavaScript framework for building modern, reactive user interfaces with a focus on performance and simplicity.
+* Fastify: A high-performance web framework for Node.js, used to build APIs with low overhead and minimal latency.
+* Supabase: An open-source backend-as-a-service platform, offering real-time databases, authentication, and storage solutions for modern web applications.
